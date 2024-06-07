@@ -23,14 +23,14 @@ from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class UserInfoSchema(BaseModel):
     """
-    LoginSchema
+    UserInfoSchema
     """  # noqa: E501
 
     email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    nickname: StrictStr
+    __properties: ClassVar[List[str]] = ["email", "nickname"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +49,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of UserInfoSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of UserInfoSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +81,6 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {"email": obj.get("email"), "nickname": obj.get("nickname")}
         )
         return _obj

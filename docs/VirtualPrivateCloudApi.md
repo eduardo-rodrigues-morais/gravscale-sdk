@@ -1,16 +1,16 @@
-# gravscale.MetalApi
+# gravscale.VirtualPrivateCloudApi
 
 All URIs are relative to *http://under-dev-services.gravmanage.com/dev/public-api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_metal**](MetalApi.md#get_metal) | **GET** /api/metal/ | Get Available Metals
+[**list_vpc**](VirtualPrivateCloudApi.md#list_vpc) | **GET** /api/vpc/ | List Vpc
 
 
-# **get_metal**
-> object get_metal()
+# **list_vpc**
+> PageVpcSchema list_vpc(client_id, page=page, size=size)
 
-Get Available Metals
+List Vpc
 
 ### Example
 
@@ -18,6 +18,7 @@ Get Available Metals
 
 ```python
 import gravscale
+from gravscale.models.page_vpc_schema import PageVpcSchema
 from gravscale.rest import ApiException
 from pprint import pprint
 
@@ -40,26 +41,34 @@ configuration = gravscale.Configuration(
 # Enter a context with an instance of the API client
 with gravscale.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = gravscale.MetalApi(api_client)
+    api_instance = gravscale.VirtualPrivateCloudApi(api_client)
+    client_id = 56 # int | 
+    page = 1 # int |  (optional) (default to 1)
+    size = 50 # int |  (optional) (default to 50)
 
     try:
-        # Get Available Metals
-        api_response = api_instance.get_metal()
-        print("The response of MetalApi->get_metal:\n")
+        # List Vpc
+        api_response = api_instance.list_vpc(client_id, page=page, size=size)
+        print("The response of VirtualPrivateCloudApi->list_vpc:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling MetalApi->get_metal: %s\n" % e)
+        print("Exception when calling VirtualPrivateCloudApi->list_vpc: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **client_id** | **int**|  | 
+ **page** | **int**|  | [optional] [default to 1]
+ **size** | **int**|  | [optional] [default to 50]
 
 ### Return type
 
-**object**
+[**PageVpcSchema**](PageVpcSchema.md)
 
 ### Authorization
 
@@ -75,6 +84,7 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

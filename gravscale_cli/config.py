@@ -1,6 +1,8 @@
+from datetime import datetime
 from pathlib import Path
 import os
 import json
+import toml
 import gravscale as grav_sdk
 
 
@@ -23,14 +25,35 @@ class CliConfiguration:
             with open(os.path.join(self._config_path, ".auth.json"), "r") as file:
                 data = json.load(file)
                 return data
-        except FileNotFoundError:
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
             return {}
+
+    def _handle_expired_access_token(self, auth: dict):
+        now = datetime.now()
+        expiration = datetime.fromisoformat(auth["expires_at"])
+        if now > expiration:
+            configuration = grav_sdk.Configuration(host=self.host)
+            with grav_sdk.ApiClient(configuration) as api_client:
+                api_instance = grav_sdk.AuthenticationApi(api_client)
+                authorization = api_instance.refresh_token(auth["refresh_token"])
+                self.save_authorization(authorization)
+                return authorization.access_token
+        return auth["access_token"]
 
     def save_authorization(self, authorization: grav_sdk.AuthorizationSchema):
         self._ensure_config_directory()
         with open(os.path.join(self._config_path, ".auth.json"), "w") as file:
-            json.dump({"access_token": authorization.access_token}, file)
+            json.dump(authorization.dict(), file, default=str)
 
     def load_sdk_configuration(self) -> grav_sdk.Configuration:
-        auth_data = self._load_authorization()
-        return grav_sdk.Configuration(host=self.host, **auth_data)
+        config = {"host": self.host}
+        auth = self._load_authorization()
+        if len(auth.keys()) > 0:
+            config["access_token"] = self._handle_expired_access_token(auth)
+        return grav_sdk.Configuration(**config)
+
+    @classmethod
+    def read_user_config(cls, path_config_file: str):
+        with open(path_config_file, "r") as file:
+            config = toml.load(file)
+        return config

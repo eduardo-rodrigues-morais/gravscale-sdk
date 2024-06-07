@@ -17,20 +17,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from gravscale.models.task_schema import TaskSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class PageTaskSchema(BaseModel):
     """
-    LoginSchema
+    PageTaskSchema
     """  # noqa: E501
 
-    email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    items: List[TaskSchema]
+    total: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
+    page: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
+    size: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
+    pages: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
+    __properties: ClassVar[List[str]] = ["items", "total", "page", "size", "pages"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +54,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of PageTaskSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +74,18 @@ class LoginSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        _items = []
+        if self.items:
+            for _item in self.items:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["items"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of PageTaskSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +93,14 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {
+                "items": [TaskSchema.from_dict(_item) for _item in obj["items"]]
+                if obj.get("items") is not None
+                else None,
+                "total": obj.get("total"),
+                "page": obj.get("page"),
+                "size": obj.get("size"),
+                "pages": obj.get("pages"),
+            }
         )
         return _obj

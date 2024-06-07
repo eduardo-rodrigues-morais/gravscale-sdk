@@ -28,7 +28,8 @@ REQUIRES = [
     "python-dateutil",
     "pydantic >= 2",
     "typing-extensions >= 4.7.1",
-    "asyncclick"
+    "asyncclick",
+    "toml",
 ]
 
 setup(
@@ -42,7 +43,7 @@ setup(
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     long_description="""\
     API pública da Gravscale oferece aos usuários a capacidade de se autenticar, visualizar e contratar produtos disponíveis, enviar dados de contratação, escolher formas de pagamento e gerenciar nossos produtos. Além disso, os usuários podem cadastrar chaves SSH e realizar o deploy de um sistema operacional de forma eficiente e segura. Esta API foi projetado para simplificar e agilizar o gerenciamento de recursos proporcionando que a a Gravscale forneça uma experiência integrada e intuitiva para os usuários.
     """,  # noqa: E501

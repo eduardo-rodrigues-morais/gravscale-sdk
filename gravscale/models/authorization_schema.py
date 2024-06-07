@@ -17,25 +17,34 @@ import pprint
 import re  # noqa: F401
 import json
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
+
 
 class AuthorizationSchema(BaseModel):
     """
     AuthorizationSchema
-    """ # noqa: E501
+    """  # noqa: E501
+
     access_token: StrictStr = Field(alias="accessToken")
+    refresh_token: Optional[StrictStr] = Field(default=None, alias="refreshToken")
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["accessToken", "type"]
+    expires_at: datetime = Field(alias="expiresAt")
+    __properties: ClassVar[List[str]] = [
+        "accessToken",
+        "refreshToken",
+        "type",
+        "expiresAt",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
-
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -61,8 +70,7 @@ class AuthorizationSchema(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
-        ])
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -80,10 +88,12 @@ class AuthorizationSchema(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({
-            "accessToken": obj.get("accessToken"),
-            "type": obj.get("type")
-        })
+        _obj = cls.model_validate(
+            {
+                "accessToken": obj.get("accessToken"),
+                "refreshToken": obj.get("refreshToken"),
+                "type": obj.get("type"),
+                "expiresAt": obj.get("expiresAt"),
+            }
+        )
         return _obj
-
-

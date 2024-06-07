@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+python_dateutil = "*"
+setuptools = "*"
+urllib3 = "*"
+pydantic = "*"
+typing-extensions = "*"
+requests = "*"
+toml = "*"
+click = "*"
+asyncclick = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+pytest-watch = "==2.0.0"
+pytest-asyncio = "*"
+faker = "*"
+black = "*"
+
+[requires]
+python_version = ">=3.10"

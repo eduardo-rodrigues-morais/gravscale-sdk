@@ -19,18 +19,19 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
+from gravscale.models.group_schema import GroupSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class TenantSchema(BaseModel):
     """
-    LoginSchema
+    TenantSchema
     """  # noqa: E501
 
-    email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    name: StrictStr
+    group: GroupSchema
+    __properties: ClassVar[List[str]] = ["name", "group"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +50,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of TenantSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +70,14 @@ class LoginSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of group
+        if self.group:
+            _dict["group"] = self.group.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of TenantSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +85,11 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {
+                "name": obj.get("name"),
+                "group": GroupSchema.from_dict(obj["group"])
+                if obj.get("group") is not None
+                else None,
+            }
         )
         return _obj

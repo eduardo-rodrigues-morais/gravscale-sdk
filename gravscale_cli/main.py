@@ -1,7 +1,10 @@
 import asyncclick as click
 
-from .commands.auth import LoginAuthenticateCommand
 from .config import CliConfiguration
+from .commands import (
+    LoginAuthenticateCommand,
+    AuthenticateInfoCommand,
+)
 
 
 @click.group(chain=True)
@@ -10,41 +13,35 @@ def gravscale(ctx) -> None:
     ctx.obj = {"config": CliConfiguration()}
 
 
-@gravscale.command()
-@click.option(
-    "--email",
-    default=None,
-    help="User email",
-)
-@click.option(
-    "--password",
-    default=None,
-    help="User password",
-)
+@gravscale.command(help="Authenticate user by email and password")
 @click.option(
     "--config-file",
+    "-c",
+    type=click.Path(exists=True),
     default=None,
-    help="The configuration file",
+    help="Configuration file",
 )
+@click.option("--email", "-e", required=False, type=str, help="User email")
+@click.option("--password", "-p", required=False, type=str, help="User password")
 @click.pass_obj
 async def login(obj, email: str, password: str, config_file: str):
     cli_config: CliConfiguration = obj["config"]
-    authorization = await LoginAuthenticateCommand(
-        email, password, cli_config.load_sdk_configuration()
-    ).execute()
-    cli_config.save_authorization(authorization)
+    await LoginAuthenticateCommand(email, password, config_file, cli_config).execute()
     click.echo("User successfully authenticated!")
+
+
+@gravscale.command(help="Gets information from the user who is authenticated")
+@click.pass_obj
+async def auth_info(obj: dict):
+    cli_config: CliConfiguration = obj["config"]
+    user = await AuthenticateInfoCommand(cli_config.load_sdk_configuration()).execute()
+    click.echo(f"Authenticated user: {user.email} {user.nickname}")
 
 
 @gravscale.command()
 @click.pass_obj
-async def get_metal(obj):
+async def list_vpc(obj: dict):
     cli_config: CliConfiguration = obj["config"]
-    grav_config = cli_config.load_sdk_configuration()
-    print(grav_config.auth_settings())
-
-    # click.echo(ctx.obj)
-    # await GetMetalsCommand().execute()
 
 
 if __name__ == "__main__":

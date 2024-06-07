@@ -17,20 +17,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
+from gravscale.models.app_modules_network_schema_vpc_schema import (
+    AppModulesNetworkSchemaVpcSchema,
+)
+from gravscale.models.ip_schema import IpSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class PublicIpSchema(BaseModel):
     """
-    LoginSchema
+    PublicIpSchema
     """  # noqa: E501
 
-    email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    address: StrictStr
+    vpc: AppModulesNetworkSchemaVpcSchema
+    public_ip: List[IpSchema] = Field(alias="publicIp")
+    __properties: ClassVar[List[str]] = ["address", "vpc", "publicIp"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +54,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of PublicIpSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +74,21 @@ class LoginSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of vpc
+        if self.vpc:
+            _dict["vpc"] = self.vpc.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in public_ip (list)
+        _items = []
+        if self.public_ip:
+            for _item in self.public_ip:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["publicIp"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of PublicIpSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +96,14 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {
+                "address": obj.get("address"),
+                "vpc": AppModulesNetworkSchemaVpcSchema.from_dict(obj["vpc"])
+                if obj.get("vpc") is not None
+                else None,
+                "publicIp": [IpSchema.from_dict(_item) for _item in obj["publicIp"]]
+                if obj.get("publicIp") is not None
+                else None,
+            }
         )
         return _obj

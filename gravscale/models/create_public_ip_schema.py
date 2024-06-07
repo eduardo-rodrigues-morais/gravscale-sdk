@@ -17,20 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class CreatePublicIpSchema(BaseModel):
     """
-    LoginSchema
+    CreatePublicIpSchema
     """  # noqa: E501
 
-    email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    vpc_name: StrictStr = Field(alias="vpcName")
+    address: StrictStr
+    __properties: ClassVar[List[str]] = ["vpcName", "address"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +49,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of CreatePublicIpSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of CreatePublicIpSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +81,6 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {"vpcName": obj.get("vpcName"), "address": obj.get("address")}
         )
         return _obj

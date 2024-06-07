@@ -1,16 +1,16 @@
-# gravscale.MetalApi
+# gravscale.TaskManagerApi
 
 All URIs are relative to *http://under-dev-services.gravmanage.com/dev/public-api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_metal**](MetalApi.md#get_metal) | **GET** /api/metal/ | Get Available Metals
+[**list_tasks**](TaskManagerApi.md#list_tasks) | **GET** /api/task/ | List Tasks
 
 
-# **get_metal**
-> object get_metal()
+# **list_tasks**
+> PageTaskSchema list_tasks(client_id, task_id=task_id, status=status, created_at=created_at, updated_at=updated_at, page=page, size=size)
 
-Get Available Metals
+List Tasks
 
 ### Example
 
@@ -18,6 +18,7 @@ Get Available Metals
 
 ```python
 import gravscale
+from gravscale.models.page_task_schema import PageTaskSchema
 from gravscale.rest import ApiException
 from pprint import pprint
 
@@ -40,26 +41,42 @@ configuration = gravscale.Configuration(
 # Enter a context with an instance of the API client
 with gravscale.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = gravscale.MetalApi(api_client)
+    api_instance = gravscale.TaskManagerApi(api_client)
+    client_id = 56 # int | 
+    task_id = 'task_id_example' # str |  (optional)
+    status = 'status_example' # str |  (optional)
+    created_at = '2013-10-20T19:20:30+01:00' # datetime |  (optional)
+    updated_at = '2013-10-20T19:20:30+01:00' # datetime |  (optional)
+    page = 1 # int |  (optional) (default to 1)
+    size = 50 # int |  (optional) (default to 50)
 
     try:
-        # Get Available Metals
-        api_response = api_instance.get_metal()
-        print("The response of MetalApi->get_metal:\n")
+        # List Tasks
+        api_response = api_instance.list_tasks(client_id, task_id=task_id, status=status, created_at=created_at, updated_at=updated_at, page=page, size=size)
+        print("The response of TaskManagerApi->list_tasks:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling MetalApi->get_metal: %s\n" % e)
+        print("Exception when calling TaskManagerApi->list_tasks: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **client_id** | **int**|  | 
+ **task_id** | **str**|  | [optional] 
+ **status** | **str**|  | [optional] 
+ **created_at** | **datetime**|  | [optional] 
+ **updated_at** | **datetime**|  | [optional] 
+ **page** | **int**|  | [optional] [default to 1]
+ **size** | **int**|  | [optional] [default to 50]
 
 ### Return type
 
-**object**
+[**PageTaskSchema**](PageTaskSchema.md)
 
 ### Authorization
 
@@ -75,6 +92,7 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

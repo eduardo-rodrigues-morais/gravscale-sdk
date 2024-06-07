@@ -68,3 +68,5 @@ target/
 .idea/
 .openapi-generator/
 .openapi-generator-ignore
+
+gravscale.toml

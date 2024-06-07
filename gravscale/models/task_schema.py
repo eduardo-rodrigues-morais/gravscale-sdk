@@ -17,20 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class LoginSchema(BaseModel):
+class TaskSchema(BaseModel):
     """
-    LoginSchema
+    TaskSchema
     """  # noqa: E501
 
-    email: StrictStr
-    password: StrictStr
-    __properties: ClassVar[List[str]] = ["email", "password"]
+    id: StrictStr
+    status: StrictStr
+    error: Optional[StrictStr] = None
+    created_at: datetime = Field(alias="createdAt")
+    updated_at: datetime = Field(alias="updatedAt")
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "status",
+        "error",
+        "createdAt",
+        "updatedAt",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +59,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of LoginSchema from a JSON string"""
+        """Create an instance of TaskSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +83,7 @@ class LoginSchema(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of LoginSchema from a dict"""
+        """Create an instance of TaskSchema from a dict"""
         if obj is None:
             return None
 
@@ -81,6 +91,12 @@ class LoginSchema(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"email": obj.get("email"), "password": obj.get("password")}
+            {
+                "id": obj.get("id"),
+                "status": obj.get("status"),
+                "error": obj.get("error"),
+                "createdAt": obj.get("createdAt"),
+                "updatedAt": obj.get("updatedAt"),
+            }
         )
         return _obj

@@ -22,10 +22,12 @@ from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AccountSchema(BaseModel):
+
+class AppModulesAuthenticationSchemaAccountSchema(BaseModel):
     """
-    AccountSchema
-    """ # noqa: E501
+    AppModulesAuthenticationSchemaAccountSchema
+    """  # noqa: E501
+
     account_id: StrictStr = Field(alias="accountId")
     email: StrictStr
     nickname: StrictStr
@@ -38,7 +40,6 @@ class AccountSchema(BaseModel):
         protected_namespaces=(),
     )
 
-
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
         return pprint.pformat(self.model_dump(by_alias=True))
@@ -50,7 +51,7 @@ class AccountSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AccountSchema from a JSON string"""
+        """Create an instance of AppModulesAuthenticationSchemaAccountSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -63,8 +64,7 @@ class AccountSchema(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([
-        ])
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -75,19 +75,19 @@ class AccountSchema(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AccountSchema from a dict"""
+        """Create an instance of AppModulesAuthenticationSchemaAccountSchema from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({
-            "accountId": obj.get("accountId"),
-            "email": obj.get("email"),
-            "nickname": obj.get("nickname"),
-            "picture": obj.get("picture")
-        })
+        _obj = cls.model_validate(
+            {
+                "accountId": obj.get("accountId"),
+                "email": obj.get("email"),
+                "nickname": obj.get("nickname"),
+                "picture": obj.get("picture"),
+            }
+        )
         return _obj
-
-
