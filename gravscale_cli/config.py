@@ -33,11 +33,14 @@ class CliConfiguration:
         expiration = datetime.fromisoformat(auth["expires_at"])
         if now > expiration:
             configuration = grav_sdk.Configuration(host=self.host)
-            with grav_sdk.ApiClient(configuration) as api_client:
-                api_instance = grav_sdk.AuthenticationApi(api_client)
-                authorization = api_instance.refresh_token(auth["refresh_token"])
-                self.save_authorization(authorization)
-                return authorization.access_token
+            try:
+                with grav_sdk.ApiClient(configuration) as api_client:
+                    api_instance = grav_sdk.AuthenticationApi(api_client)
+                    authorization = api_instance.refresh_token(auth["refresh_token"])
+                    self.save_authorization(authorization)
+                    return authorization.access_token
+            except grav_sdk.exceptions.ForbiddenException:
+                return None
         return auth["access_token"]
 
     def save_authorization(self, authorization: grav_sdk.AuthorizationSchema):
@@ -49,7 +52,9 @@ class CliConfiguration:
         config = {"host": self.host}
         auth = self._load_authorization()
         if len(auth.keys()) > 0:
-            config["access_token"] = self._handle_expired_access_token(auth)
+            access_token = self._handle_expired_access_token(auth)
+            if access_token:
+                config["access_token"] = access_token
         return grav_sdk.Configuration(**config)
 
     @classmethod
