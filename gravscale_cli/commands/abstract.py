@@ -67,7 +67,7 @@ class AbstractPrintableTable(metaclass=ABCMeta):
 class AbstractPrintableJSON(metaclass=ABCMeta):
     @classmethod
     async def _echo_json(cls, data: dict):
-        formatted_json = json.dumps(data, indent=3)
+        formatted_json = json.dumps(data, indent=2)
         click.echo(formatted_json)
 
 

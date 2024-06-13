@@ -3,7 +3,10 @@ from typing import List
 import click
 
 import gravscale
-from .abstract import AbstractPrintableTable, AbstractPrintableJSON
+from gravscale_cli.commands.abstract import (
+    AbstractPrintableTable,
+    AbstractPrintableJSON,
+)
 
 
 class ListVpcCommand(AbstractPrintableTable, AbstractPrintableJSON):

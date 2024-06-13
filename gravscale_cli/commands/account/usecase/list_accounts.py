@@ -1,10 +1,7 @@
-import json
 from typing import List
 
-import click
-
 import gravscale
-from .abstract import AbstractPrintableTable, AbstractPrintableJSON
+from ...abstract import AbstractPrintableTable, AbstractPrintableJSON
 
 
 class ListAccountsCommand(AbstractPrintableTable, AbstractPrintableJSON):
