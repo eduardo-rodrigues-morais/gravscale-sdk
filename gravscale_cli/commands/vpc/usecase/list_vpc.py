@@ -1,15 +1,20 @@
 from typing import List
 
 import click
-
 import gravscale
-from gravscale_cli.commands.abstract import (
+
+from ...abstract import (
     AbstractPrintableTable,
     AbstractPrintableJSON,
+    AbstractReadInputValue,
 )
+from ...network.enum import EnumNetworkPrintableAttributes
 
 
-class ListVpcCommand(AbstractPrintableTable, AbstractPrintableJSON):
+class ListVpcCommand(
+    AbstractReadInputValue, AbstractPrintableTable, AbstractPrintableJSON
+):
+    _printable_attributes = EnumNetworkPrintableAttributes
     _table_headers = ["VPC Name", "Tenant Name", "Datacenter"]
 
     def __init__(self, configuration: gravscale.Configuration, client_id: int):
@@ -17,10 +22,8 @@ class ListVpcCommand(AbstractPrintableTable, AbstractPrintableJSON):
         self._client_id = client_id
 
     async def _validate(self):
-        self._client_id = (
-            click.prompt("Client ID", type=int)
-            if not self._client_id
-            else self._client_id
+        self._client_id = await self._read_prompt_input(
+            self._printable_attributes.CLIENT_ID.value, self._client_id, type=int
         )
 
     async def _gen_table_rows(self, vpcs: List[dict]):

@@ -12,7 +12,14 @@ async def vpc_group():
 
 @vpc_group.command("list")
 @click.option("--client-id", "-c", required=False, type=int, help="Client ID")
-@click.option("--json", "-j", default=False, type=bool, help="Returned result as JSON")
+@click.option(
+    "--json",
+    "-j",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Returned result as JSON",
+)
 @click.pass_obj
 async def list_vpc_command(obj, client_id: int, json: bool):
     cli_config: CliConfiguration = obj["config"]

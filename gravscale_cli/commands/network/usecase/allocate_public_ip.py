@@ -24,16 +24,16 @@ class CreateNetworkPublicIp(AbstractReadInputValue):
 
     async def _validate(self):
         self._client_id = await self._read_prompt_input(
-            self._printable_attributes.CLIENT_ID.value, self._client_id, int
+            self._printable_attributes.CLIENT_ID.value, self._client_id, type=int
         )
         self._vpc_name = await self._read_prompt_input(
-            self._printable_attributes.VPC_NAME.value, self._vpc_name, str
+            self._printable_attributes.VPC_NAME.value, self._vpc_name, type=str
         )
         self._address = await self._read_prompt_input(
             self._printable_attributes.ADDRESS.value,
             self._address,
-            str,
-            [(ipaddress.ip_address, "The address IP is invalid")],
+            type=str,
+            validators=[(ipaddress.ip_address, "The address IP is invalid")],
         )
 
     async def execute(self):

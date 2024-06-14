@@ -1,10 +1,14 @@
 import click
 
 import gravscale
+from ...abstract import AbstractReadInputValue
 from ....config import CliConfiguration
+from ..enum import EnumAuthenticationPrintableAttributes
 
 
-class LoginAuthenticateCommand:
+class LoginAuthenticateCommand(AbstractReadInputValue):
+    _printable_attributes = EnumAuthenticationPrintableAttributes
+
     def __init__(
         self, email: str, password: str, config_file: str, cli_config: CliConfiguration
     ):
@@ -20,13 +24,14 @@ class LoginAuthenticateCommand:
             self._password = data["gravscale"]["password"]
             return
 
-        self._email = (
-            click.prompt("Email", type=str) if not self._email else self._email
+        self._email = await self._read_prompt_input(
+            self._printable_attributes.EMAIL.value, self._email, type=str
         )
-        self._password = (
-            click.prompt("Password", hide_input=True, type=str)
-            if not self._password
-            else self._password
+        self._password = await self._read_prompt_input(
+            self._printable_attributes.PASSWORD.value,
+            self._password,
+            type=str,
+            hide_input=True,
         )
 
     async def execute(self):

@@ -3,7 +3,9 @@ from abc import ABCMeta, abstractmethod
 from typing import List, Callable, Any, Tuple
 
 import click
-from click import ParamType
+
+from .exceptions import ReadInputValueException, PrintableTableException
+from .utils import get_columns_size, get_max_size_columns
 
 
 class AbstractPrintableTable(metaclass=ABCMeta):
@@ -18,27 +20,12 @@ class AbstractPrintableTable(metaclass=ABCMeta):
 
     @classmethod
     async def _calculate_columns_width(cls, headers: List[str], rows: List[tuple]):
-        dict_i = {}
-        for item in rows:
-            if len(item) > len(headers):
-                raise ValueError("Headers and rows must be same size.")
-            for i in range(len(item)):
-                if i in dict_i.keys():
-                    dict_i[i].append(len(str(item[i])))
-                else:
-                    dict_i[i] = []
-                    dict_i[i].append(len(str(item[i])))
-
-        column_widths = []
-        for column, widths in dict_i.items():
-            max_value = (
-                max(widths)
-                if max(widths) > len(headers[column])
-                else len(headers[column])
-            )
-            column_widths.append({column: max_value})
-
-        return column_widths
+        try:
+            size_items = await get_columns_size(headers, rows)
+            column_widths = await get_max_size_columns(headers, size_items)
+            return column_widths
+        except Exception as exc:
+            raise PrintableTableException(exc)
 
     @classmethod
     async def _generate_line(cls, *args):
@@ -77,21 +64,22 @@ class AbstractReadInputValue(metaclass=ABCMeta):
         cls,
         text: str,
         variable,
-        type: ParamType,
         validators: List[Tuple[Callable[[Any], bool], str]] = None,
+        **kwargs,
     ):
-        value = click.prompt(text, type=type) if not variable else variable
-
-        if validators:
-            error = None
-            try:
+        error = None
+        try:
+            value = click.prompt(text, **kwargs) if not variable else variable
+            if validators:
                 for validator, msg_error in validators:
                     error = msg_error
                     validator(value)
-
-            except ValueError as exc:
-                error = error if error else exc.args[0]
-                click.echo(error)
-                return await cls._read_prompt_input(text, None, type, validators)
-
-        return value
+            return value
+        except ValueError as exc:
+            error = error if error else exc.args[0]
+            click.echo(error)
+            return await cls._read_prompt_input(
+                text, None, validators=validators, **kwargs
+            )
+        except click.exceptions.Abort:
+            raise ReadInputValueException("Input aborted")

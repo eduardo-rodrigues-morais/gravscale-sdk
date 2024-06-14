@@ -22,13 +22,13 @@ class DeallocateNetworkPublicIp(AbstractReadInputValue):
 
     async def _validate(self):
         self._client_id = await self._read_prompt_input(
-            self._printable_attributes.CLIENT_ID.value, self._client_id, int
+            self._printable_attributes.CLIENT_ID.value, self._client_id, type=int
         )
         self._address = await self._read_prompt_input(
             self._printable_attributes.ADDRESS.value,
             self._address,
-            str,
-            [(ipaddress.ip_address, "The address IP is invalid")],
+            type=str,
+            validators=[(ipaddress.ip_address, "The address IP is invalid")],
         )
 
     async def execute(self):

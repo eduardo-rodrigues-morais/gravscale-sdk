@@ -26,10 +26,10 @@ class ListNetworkPublicIps(
 
     async def _validate(self):
         self._client_id = await self._read_prompt_input(
-            self._printable_attributes.CLIENT_ID.value, self._client_id, int
+            self._printable_attributes.CLIENT_ID.value, self._client_id, type=int
         )
         self._vpc_name = await self._read_prompt_input(
-            self._printable_attributes.VPC_NAME.value, self._vpc_name, str
+            self._printable_attributes.VPC_NAME.value, self._vpc_name, type=str
         )
 
     async def _gen_table_rows(self, ips: dict):

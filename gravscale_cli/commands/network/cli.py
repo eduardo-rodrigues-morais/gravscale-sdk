@@ -17,7 +17,14 @@ async def nat11_group():
 @nat11_group.command("list")
 @click.option("--client-id", "-c", required=False, type=int, help="Client ID")
 @click.option("--vpc-name", "-v", required=False, type=str, help="VPC name")
-@click.option("--json", "-j", default=False, type=bool, help="Returned result as JSON")
+@click.option(
+    "--json",
+    "-j",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Returned result as JSON",
+)
 @click.pass_obj
 async def list_publicip(obj, client_id: int, vpc_name: str, json: bool):
     cli_config: CliConfiguration = obj["config"]
