@@ -14,43 +14,29 @@
 
 import unittest
 
-from gravscale.api.authentication_api import AuthenticationApi
+from gravscale.api.task_manager_api import TaskManagerApi
 
 
-class TestAuthenticationApi(unittest.TestCase):
-    """AuthenticationApi unit test stubs"""
+class TestTaskManagerApi(unittest.TestCase):
+    """TaskManagerApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = AuthenticationApi()
+        self.api = TaskManagerApi()
 
     def tearDown(self) -> None:
         pass
 
-    def test_info(self) -> None:
-        """Test case for info
+    def test_get_task(self) -> None:
+        """Test case for get_task
 
-        Authenticated User Information
+        Get Task
         """
         pass
 
-    def test_refresh_token(self) -> None:
-        """Test case for refresh_token
+    def test_list_tasks(self) -> None:
+        """Test case for list_tasks
 
-        Refresh Access Token
-        """
-        pass
-
-    def test_sign_in(self) -> None:
-        """Test case for sign_in
-
-        Sign In
-        """
-        pass
-
-    def test_sign_up(self) -> None:
-        """Test case for sign_up
-
-        Sign Up
+        List Tasks
         """
         pass
 

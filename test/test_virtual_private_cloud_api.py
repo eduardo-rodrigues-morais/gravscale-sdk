@@ -14,43 +14,22 @@
 
 import unittest
 
-from gravscale.api.authentication_api import AuthenticationApi
+from gravscale.api.virtual_private_cloud_api import VirtualPrivateCloudApi
 
 
-class TestAuthenticationApi(unittest.TestCase):
-    """AuthenticationApi unit test stubs"""
+class TestVirtualPrivateCloudApi(unittest.TestCase):
+    """VirtualPrivateCloudApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = AuthenticationApi()
+        self.api = VirtualPrivateCloudApi()
 
     def tearDown(self) -> None:
         pass
 
-    def test_info(self) -> None:
-        """Test case for info
+    def test_list_vpc(self) -> None:
+        """Test case for list_vpc
 
-        Authenticated User Information
-        """
-        pass
-
-    def test_refresh_token(self) -> None:
-        """Test case for refresh_token
-
-        Refresh Access Token
-        """
-        pass
-
-    def test_sign_in(self) -> None:
-        """Test case for sign_in
-
-        Sign In
-        """
-        pass
-
-    def test_sign_up(self) -> None:
-        """Test case for sign_up
-
-        Sign Up
+        List Vpc
         """
         pass
 

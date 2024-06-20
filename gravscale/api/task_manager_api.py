@@ -20,7 +20,8 @@ from datetime import datetime
 from pydantic import Field, StrictInt, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
-from gravscale.models.page_task_schema import PageTaskSchema
+from gravscale.models.page_task_tree_schema import PageTaskTreeSchema
+from gravscale.models.task_tree_schema import TaskTreeSchema
 
 from gravscale.api_client import ApiClient, RequestSerialized
 from gravscale.api_response import ApiResponse
@@ -40,10 +41,264 @@ class TaskManagerApi:
         self.api_client = api_client
 
     @validate_call
+    def get_task(
+        self,
+        task_id: StrictStr,
+        client_id: StrictInt,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
+            ],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> TaskTreeSchema:
+        """Get Task
+
+
+        :param task_id: (required)
+        :type task_id: str
+        :param client_id: (required)
+        :type client_id: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._get_task_serialize(
+            task_id=task_id,
+            client_id=client_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "TaskTreeSchema",
+            "422": "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param, _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def get_task_with_http_info(
+        self,
+        task_id: StrictStr,
+        client_id: StrictInt,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
+            ],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[TaskTreeSchema]:
+        """Get Task
+
+
+        :param task_id: (required)
+        :type task_id: str
+        :param client_id: (required)
+        :type client_id: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._get_task_serialize(
+            task_id=task_id,
+            client_id=client_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "TaskTreeSchema",
+            "422": "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param, _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_task_without_preload_content(
+        self,
+        task_id: StrictStr,
+        client_id: StrictInt,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]
+            ],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Task
+
+
+        :param task_id: (required)
+        :type task_id: str
+        :param client_id: (required)
+        :type client_id: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._get_task_serialize(
+            task_id=task_id,
+            client_id=client_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "TaskTreeSchema",
+            "422": "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param, _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+    def _get_task_serialize(
+        self,
+        task_id,
+        client_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if task_id is not None:
+            _path_params["task_id"] = task_id
+        # process the query parameters
+        if client_id is not None:
+            _query_params.append(("client_id", client_id))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(
+            ["application/json"]
+        )
+
+        # authentication setting
+        _auth_settings: List[str] = ["HTTPBearer"]
+
+        return self.api_client.param_serialize(
+            method="GET",
+            resource_path="/api/task/{task_id}",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
     def list_tasks(
         self,
         client_id: StrictInt,
-        task_id: Optional[StrictStr] = None,
+        correlation_id: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         created_at: Optional[datetime] = None,
         updated_at: Optional[datetime] = None,
@@ -60,14 +315,14 @@ class TaskManagerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> PageTaskSchema:
+    ) -> PageTaskTreeSchema:
         """List Tasks
 
 
         :param client_id: (required)
         :type client_id: int
-        :param task_id:
-        :type task_id: str
+        :param correlation_id:
+        :type correlation_id: str
         :param status:
         :type status: str
         :param created_at:
@@ -102,7 +357,7 @@ class TaskManagerApi:
 
         _param = self._list_tasks_serialize(
             client_id=client_id,
-            task_id=task_id,
+            correlation_id=correlation_id,
             status=status,
             created_at=created_at,
             updated_at=updated_at,
@@ -115,7 +370,7 @@ class TaskManagerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PageTaskSchema",
+            "200": "PageTaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -131,7 +386,7 @@ class TaskManagerApi:
     def list_tasks_with_http_info(
         self,
         client_id: StrictInt,
-        task_id: Optional[StrictStr] = None,
+        correlation_id: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         created_at: Optional[datetime] = None,
         updated_at: Optional[datetime] = None,
@@ -148,14 +403,14 @@ class TaskManagerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[PageTaskSchema]:
+    ) -> ApiResponse[PageTaskTreeSchema]:
         """List Tasks
 
 
         :param client_id: (required)
         :type client_id: int
-        :param task_id:
-        :type task_id: str
+        :param correlation_id:
+        :type correlation_id: str
         :param status:
         :type status: str
         :param created_at:
@@ -190,7 +445,7 @@ class TaskManagerApi:
 
         _param = self._list_tasks_serialize(
             client_id=client_id,
-            task_id=task_id,
+            correlation_id=correlation_id,
             status=status,
             created_at=created_at,
             updated_at=updated_at,
@@ -203,7 +458,7 @@ class TaskManagerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PageTaskSchema",
+            "200": "PageTaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -219,7 +474,7 @@ class TaskManagerApi:
     def list_tasks_without_preload_content(
         self,
         client_id: StrictInt,
-        task_id: Optional[StrictStr] = None,
+        correlation_id: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         created_at: Optional[datetime] = None,
         updated_at: Optional[datetime] = None,
@@ -242,8 +497,8 @@ class TaskManagerApi:
 
         :param client_id: (required)
         :type client_id: int
-        :param task_id:
-        :type task_id: str
+        :param correlation_id:
+        :type correlation_id: str
         :param status:
         :type status: str
         :param created_at:
@@ -278,7 +533,7 @@ class TaskManagerApi:
 
         _param = self._list_tasks_serialize(
             client_id=client_id,
-            task_id=task_id,
+            correlation_id=correlation_id,
             status=status,
             created_at=created_at,
             updated_at=updated_at,
@@ -291,7 +546,7 @@ class TaskManagerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PageTaskSchema",
+            "200": "PageTaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -302,7 +557,7 @@ class TaskManagerApi:
     def _list_tasks_serialize(
         self,
         client_id,
-        task_id,
+        correlation_id,
         status,
         created_at,
         updated_at,
@@ -329,8 +584,8 @@ class TaskManagerApi:
         if client_id is not None:
             _query_params.append(("client_id", client_id))
 
-        if task_id is not None:
-            _query_params.append(("task_id", task_id))
+        if correlation_id is not None:
+            _query_params.append(("correlation_id", correlation_id))
 
         if status is not None:
             _query_params.append(("status", status))

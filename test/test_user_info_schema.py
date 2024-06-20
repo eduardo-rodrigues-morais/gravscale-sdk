@@ -14,11 +14,11 @@
 
 import unittest
 
-from gravscale.models.validation_error_loc_inner import ValidationErrorLocInner
+from gravscale.models.user_info_schema import UserInfoSchema
 
 
-class TestValidationErrorLocInner(unittest.TestCase):
-    """ValidationErrorLocInner unit test stubs"""
+class TestUserInfoSchema(unittest.TestCase):
+    """UserInfoSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,24 +26,28 @@ class TestValidationErrorLocInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationErrorLocInner:
-        """Test ValidationErrorLocInner
+    def make_instance(self, include_optional) -> UserInfoSchema:
+        """Test UserInfoSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationErrorLocInner`
+        # uncomment below to create an instance of `UserInfoSchema`
         """
-        model = ValidationErrorLocInner()
+        model = UserInfoSchema()
         if include_optional:
-            return ValidationErrorLocInner(
+            return UserInfoSchema(
+                email = '',
+                nickname = ''
             )
         else:
-            return ValidationErrorLocInner(
+            return UserInfoSchema(
+                email = '',
+                nickname = '',
         )
         """
 
-    def testValidationErrorLocInner(self):
-        """Test ValidationErrorLocInner"""
+    def testUserInfoSchema(self):
+        """Test UserInfoSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

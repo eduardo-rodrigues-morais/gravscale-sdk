@@ -56,10 +56,11 @@ from gravscale.models.ip_schema import IpSchema
 from gravscale.models.login_schema import LoginSchema
 from gravscale.models.page_account_schema import PageAccountSchema
 from gravscale.models.page_public_ip_schema import PagePublicIpSchema
-from gravscale.models.page_task_schema import PageTaskSchema
+from gravscale.models.page_task_tree_schema import PageTaskTreeSchema
 from gravscale.models.page_vpc_schema import PageVpcSchema
 from gravscale.models.public_ip_schema import PublicIpSchema
 from gravscale.models.task_schema import TaskSchema
+from gravscale.models.task_tree_schema import TaskTreeSchema
 from gravscale.models.tenant_schema import TenantSchema
 from gravscale.models.user_info_schema import UserInfoSchema
 from gravscale.models.validation_error import ValidationError

@@ -17,25 +17,47 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from typing_extensions import Annotated
 from gravscale.models.task_schema import TaskSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class PageTaskSchema(BaseModel):
+class TaskTreeSchema(BaseModel):
     """
-    PageTaskSchema
+    TaskTreeSchema
     """  # noqa: E501
 
-    items: List[TaskSchema]
-    total: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
-    page: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
-    size: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
-    pages: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
-    __properties: ClassVar[List[str]] = ["items", "total", "page", "size", "pages"]
+    id: StrictStr
+    status: StrictStr
+    action: Optional[StrictStr] = None
+    result: Optional[Dict[str, Any]] = None
+    correlation_id: Optional[StrictStr] = Field(default=None, alias="correlationId")
+    client_id: Optional[StrictInt] = Field(default=None, alias="clientId")
+    email: Optional[StrictStr] = None
+    error: Optional[StrictStr] = None
+    created_at: datetime = Field(alias="createdAt")
+    updated_at: datetime = Field(alias="updatedAt")
+    percentage_complete: Optional[StrictInt] = Field(
+        default=0, alias="percentageComplete"
+    )
+    sub_tasks: Optional[List[TaskSchema]] = Field(default=None, alias="subTasks")
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "status",
+        "action",
+        "result",
+        "correlationId",
+        "clientId",
+        "email",
+        "error",
+        "createdAt",
+        "updatedAt",
+        "percentageComplete",
+        "subTasks",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +76,7 @@ class PageTaskSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PageTaskSchema from a JSON string"""
+        """Create an instance of TaskTreeSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,18 +96,18 @@ class PageTaskSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in sub_tasks (list)
         _items = []
-        if self.items:
-            for _item in self.items:
+        if self.sub_tasks:
+            for _item in self.sub_tasks:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict["items"] = _items
+            _dict["subTasks"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PageTaskSchema from a dict"""
+        """Create an instance of TaskTreeSchema from a dict"""
         if obj is None:
             return None
 
@@ -94,13 +116,22 @@ class PageTaskSchema(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "items": [TaskSchema.from_dict(_item) for _item in obj["items"]]
-                if obj.get("items") is not None
+                "id": obj.get("id"),
+                "status": obj.get("status"),
+                "action": obj.get("action"),
+                "result": obj.get("result"),
+                "correlationId": obj.get("correlationId"),
+                "clientId": obj.get("clientId"),
+                "email": obj.get("email"),
+                "error": obj.get("error"),
+                "createdAt": obj.get("createdAt"),
+                "updatedAt": obj.get("updatedAt"),
+                "percentageComplete": obj.get("percentageComplete")
+                if obj.get("percentageComplete") is not None
+                else 0,
+                "subTasks": [TaskSchema.from_dict(_item) for _item in obj["subTasks"]]
+                if obj.get("subTasks") is not None
                 else None,
-                "total": obj.get("total"),
-                "page": obj.get("page"),
-                "size": obj.get("size"),
-                "pages": obj.get("pages"),
             }
         )
         return _obj

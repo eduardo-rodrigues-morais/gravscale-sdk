@@ -14,11 +14,11 @@
 
 import unittest
 
-from gravscale.models.validation_error_loc_inner import ValidationErrorLocInner
+from gravscale.models.page_account_schema import PageAccountSchema
 
 
-class TestValidationErrorLocInner(unittest.TestCase):
-    """ValidationErrorLocInner unit test stubs"""
+class TestPageAccountSchema(unittest.TestCase):
+    """PageAccountSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,24 +26,40 @@ class TestValidationErrorLocInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationErrorLocInner:
-        """Test ValidationErrorLocInner
+    def make_instance(self, include_optional) -> PageAccountSchema:
+        """Test PageAccountSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationErrorLocInner`
+        # uncomment below to create an instance of `PageAccountSchema`
         """
-        model = ValidationErrorLocInner()
+        model = PageAccountSchema()
         if include_optional:
-            return ValidationErrorLocInner(
+            return PageAccountSchema(
+                items = [
+                    gravscale.models.account_schema.AccountSchema(
+                        uuid = '', 
+                        client_id = 56, 
+                        client_status = '', )
+                    ],
+                total = 0.0,
+                page = 1.0,
+                size = 1.0,
+                pages = 0.0
             )
         else:
-            return ValidationErrorLocInner(
+            return PageAccountSchema(
+                items = [
+                    gravscale.models.account_schema.AccountSchema(
+                        uuid = '', 
+                        client_id = 56, 
+                        client_status = '', )
+                    ],
         )
         """
 
-    def testValidationErrorLocInner(self):
-        """Test ValidationErrorLocInner"""
+    def testPageAccountSchema(self):
+        """Test PageAccountSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

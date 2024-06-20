@@ -14,10 +14,11 @@
 
 import unittest
 
-from gravscale.models.account_schema import AccountSchema
+from gravscale.models.create_public_ip_schema import CreatePublicIpSchema
 
-class TestAccountSchema(unittest.TestCase):
-    """AccountSchema unit test stubs"""
+
+class TestCreatePublicIpSchema(unittest.TestCase):
+    """CreatePublicIpSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,34 +26,31 @@ class TestAccountSchema(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> AccountSchema:
-        """Test AccountSchema
-            include_option is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
-        # uncomment below to create an instance of `AccountSchema`
+    def make_instance(self, include_optional) -> CreatePublicIpSchema:
+        """Test CreatePublicIpSchema
+        include_option is a boolean, when False only required
+        params are included, when True both required and
+        optional params are included"""
+        # uncomment below to create an instance of `CreatePublicIpSchema`
         """
-        model = AccountSchema()
+        model = CreatePublicIpSchema()
         if include_optional:
-            return AccountSchema(
-                account_id = '',
-                email = '',
-                nickname = '',
-                picture = ''
+            return CreatePublicIpSchema(
+                vpc_name = '',
+                address = ''
             )
         else:
-            return AccountSchema(
-                account_id = '',
-                email = '',
-                nickname = '',
-                picture = '',
+            return CreatePublicIpSchema(
+                vpc_name = '',
+                address = '',
         )
         """
 
-    def testAccountSchema(self):
-        """Test AccountSchema"""
+    def testCreatePublicIpSchema(self):
+        """Test CreatePublicIpSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

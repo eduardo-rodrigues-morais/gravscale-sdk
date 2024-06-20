@@ -17,40 +17,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from gravscale.models.task_tree_schema import TaskTreeSchema
 from typing import Optional, Set
 from typing_extensions import Self
 
 
-class TaskSchema(BaseModel):
+class PageTaskTreeSchema(BaseModel):
     """
-    TaskSchema
+    PageTaskTreeSchema
     """  # noqa: E501
 
-    id: StrictStr
-    status: StrictStr
-    action: Optional[StrictStr] = None
-    result: Optional[Dict[str, Any]] = None
-    correlation_id: Optional[StrictStr] = Field(default=None, alias="correlationId")
-    client_id: Optional[StrictInt] = Field(default=None, alias="clientId")
-    email: Optional[StrictStr] = None
-    error: Optional[StrictStr] = None
-    created_at: datetime = Field(alias="createdAt")
-    updated_at: datetime = Field(alias="updatedAt")
-    __properties: ClassVar[List[str]] = [
-        "id",
-        "status",
-        "action",
-        "result",
-        "correlationId",
-        "clientId",
-        "email",
-        "error",
-        "createdAt",
-        "updatedAt",
-    ]
+    items: List[TaskTreeSchema]
+    total: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
+    page: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
+    size: Optional[Annotated[int, Field(strict=True, ge=1)]] = None
+    pages: Optional[Annotated[int, Field(strict=True, ge=0)]] = None
+    __properties: ClassVar[List[str]] = ["items", "total", "page", "size", "pages"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -69,7 +54,7 @@ class TaskSchema(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of TaskSchema from a JSON string"""
+        """Create an instance of PageTaskTreeSchema from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -89,11 +74,18 @@ class TaskSchema(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        _items = []
+        if self.items:
+            for _item in self.items:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["items"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of TaskSchema from a dict"""
+        """Create an instance of PageTaskTreeSchema from a dict"""
         if obj is None:
             return None
 
@@ -102,16 +94,13 @@ class TaskSchema(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "id": obj.get("id"),
-                "status": obj.get("status"),
-                "action": obj.get("action"),
-                "result": obj.get("result"),
-                "correlationId": obj.get("correlationId"),
-                "clientId": obj.get("clientId"),
-                "email": obj.get("email"),
-                "error": obj.get("error"),
-                "createdAt": obj.get("createdAt"),
-                "updatedAt": obj.get("updatedAt"),
+                "items": [TaskTreeSchema.from_dict(_item) for _item in obj["items"]]
+                if obj.get("items") is not None
+                else None,
+                "total": obj.get("total"),
+                "page": obj.get("page"),
+                "size": obj.get("size"),
+                "pages": obj.get("pages"),
             }
         )
         return _obj

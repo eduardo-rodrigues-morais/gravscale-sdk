@@ -14,43 +14,29 @@
 
 import unittest
 
-from gravscale.api.authentication_api import AuthenticationApi
+from gravscale.api.account_api import AccountApi
 
 
-class TestAuthenticationApi(unittest.TestCase):
-    """AuthenticationApi unit test stubs"""
+class TestAccountApi(unittest.TestCase):
+    """AccountApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = AuthenticationApi()
+        self.api = AccountApi()
 
     def tearDown(self) -> None:
         pass
 
-    def test_info(self) -> None:
-        """Test case for info
+    def test_get_account(self) -> None:
+        """Test case for get_account
 
-        Authenticated User Information
+        Get Account
         """
         pass
 
-    def test_refresh_token(self) -> None:
-        """Test case for refresh_token
+    def test_list_accounts(self) -> None:
+        """Test case for list_accounts
 
-        Refresh Access Token
-        """
-        pass
-
-    def test_sign_in(self) -> None:
-        """Test case for sign_in
-
-        Sign In
-        """
-        pass
-
-    def test_sign_up(self) -> None:
-        """Test case for sign_up
-
-        Sign Up
+        List All Accounts
         """
         pass
 

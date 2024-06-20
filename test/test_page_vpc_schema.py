@@ -14,11 +14,11 @@
 
 import unittest
 
-from gravscale.models.validation_error import ValidationError
+from gravscale.models.page_vpc_schema import PageVpcSchema
 
 
-class TestValidationError(unittest.TestCase):
-    """ValidationError unit test stubs"""
+class TestPageVpcSchema(unittest.TestCase):
+    """PageVpcSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,34 +26,44 @@ class TestValidationError(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationError:
-        """Test ValidationError
+    def make_instance(self, include_optional) -> PageVpcSchema:
+        """Test PageVpcSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationError`
+        # uncomment below to create an instance of `PageVpcSchema`
         """
-        model = ValidationError()
+        model = PageVpcSchema()
         if include_optional:
-            return ValidationError(
-                loc = [
-                    null
+            return PageVpcSchema(
+                items = [
+                    gravscale.models.vpc_schema.VpcSchema(
+                        name = '', 
+                        tenant = gravscale.models.tenant_schema.TenantSchema(
+                            name = '', 
+                            group = gravscale.models.group_schema.GroupSchema(
+                                name = '', ), ), )
                     ],
-                msg = '',
-                type = ''
+                total = 0.0,
+                page = 1.0,
+                size = 1.0,
+                pages = 0.0
             )
         else:
-            return ValidationError(
-                loc = [
-                    null
+            return PageVpcSchema(
+                items = [
+                    gravscale.models.vpc_schema.VpcSchema(
+                        name = '', 
+                        tenant = gravscale.models.tenant_schema.TenantSchema(
+                            name = '', 
+                            group = gravscale.models.group_schema.GroupSchema(
+                                name = '', ), ), )
                     ],
-                msg = '',
-                type = '',
         )
         """
 
-    def testValidationError(self):
-        """Test ValidationError"""
+    def testPageVpcSchema(self):
+        """Test PageVpcSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

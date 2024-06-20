@@ -14,11 +14,11 @@
 
 import unittest
 
-from gravscale.models.validation_error_loc_inner import ValidationErrorLocInner
+from gravscale.models.public_ip_schema import PublicIpSchema
 
 
-class TestValidationErrorLocInner(unittest.TestCase):
-    """ValidationErrorLocInner unit test stubs"""
+class TestPublicIpSchema(unittest.TestCase):
+    """PublicIpSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,24 +26,38 @@ class TestValidationErrorLocInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationErrorLocInner:
-        """Test ValidationErrorLocInner
+    def make_instance(self, include_optional) -> PublicIpSchema:
+        """Test PublicIpSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationErrorLocInner`
+        # uncomment below to create an instance of `PublicIpSchema`
         """
-        model = ValidationErrorLocInner()
+        model = PublicIpSchema()
         if include_optional:
-            return ValidationErrorLocInner(
+            return PublicIpSchema(
+                address = '',
+                vpc = gravscale.models.vpc_schema.VpcSchema(
+                    name = '', ),
+                public_ip = [
+                    gravscale.models.ip_schema.IpSchema(
+                        address = '', )
+                    ]
             )
         else:
-            return ValidationErrorLocInner(
+            return PublicIpSchema(
+                address = '',
+                vpc = gravscale.models.vpc_schema.VpcSchema(
+                    name = '', ),
+                public_ip = [
+                    gravscale.models.ip_schema.IpSchema(
+                        address = '', )
+                    ],
         )
         """
 
-    def testValidationErrorLocInner(self):
-        """Test ValidationErrorLocInner"""
+    def testPublicIpSchema(self):
+        """Test PublicIpSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

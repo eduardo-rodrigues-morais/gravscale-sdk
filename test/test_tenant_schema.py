@@ -14,11 +14,11 @@
 
 import unittest
 
-from gravscale.models.validation_error_loc_inner import ValidationErrorLocInner
+from gravscale.models.tenant_schema import TenantSchema
 
 
-class TestValidationErrorLocInner(unittest.TestCase):
-    """ValidationErrorLocInner unit test stubs"""
+class TestTenantSchema(unittest.TestCase):
+    """TenantSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,24 +26,30 @@ class TestValidationErrorLocInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationErrorLocInner:
-        """Test ValidationErrorLocInner
+    def make_instance(self, include_optional) -> TenantSchema:
+        """Test TenantSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationErrorLocInner`
+        # uncomment below to create an instance of `TenantSchema`
         """
-        model = ValidationErrorLocInner()
+        model = TenantSchema()
         if include_optional:
-            return ValidationErrorLocInner(
+            return TenantSchema(
+                name = '',
+                group = gravscale.models.group_schema.GroupSchema(
+                    name = '', )
             )
         else:
-            return ValidationErrorLocInner(
+            return TenantSchema(
+                name = '',
+                group = gravscale.models.group_schema.GroupSchema(
+                    name = '', ),
         )
         """
 
-    def testValidationErrorLocInner(self):
-        """Test ValidationErrorLocInner"""
+    def testTenantSchema(self):
+        """Test TenantSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

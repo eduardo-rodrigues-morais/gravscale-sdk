@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 
 # **create_public_ip**
-> TaskSchema create_public_ip(client_id, create_public_ip_schema)
+> TaskTreeSchema create_public_ip(client_id, create_public_ip_schema)
 
 Create Public Ip
 
@@ -21,7 +21,7 @@ Create Public Ip
 ```python
 import gravscale
 from gravscale.models.create_public_ip_schema import CreatePublicIpSchema
-from gravscale.models.task_schema import TaskSchema
+from gravscale.models.task_tree_schema import TaskTreeSchema
 from gravscale.rest import ApiException
 from pprint import pprint
 
@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TaskSchema**](TaskSchema.md)
+[**TaskTreeSchema**](TaskTreeSchema.md)
 
 ### Authorization
 
@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deallocate_public_ip**
-> TaskSchema deallocate_public_ip(client_id, address)
+> TaskTreeSchema deallocate_public_ip(client_id, address)
 
 Deallocate Public Ip
 
@@ -100,7 +100,7 @@ Deallocate Public Ip
 
 ```python
 import gravscale
-from gravscale.models.task_schema import TaskSchema
+from gravscale.models.task_tree_schema import TaskTreeSchema
 from gravscale.rest import ApiException
 from pprint import pprint
 
@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TaskSchema**](TaskSchema.md)
+[**TaskTreeSchema**](TaskTreeSchema.md)
 
 ### Authorization
 

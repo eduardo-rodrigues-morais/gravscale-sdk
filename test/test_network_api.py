@@ -14,43 +14,36 @@
 
 import unittest
 
-from gravscale.api.authentication_api import AuthenticationApi
+from gravscale.api.network_api import NetworkApi
 
 
-class TestAuthenticationApi(unittest.TestCase):
-    """AuthenticationApi unit test stubs"""
+class TestNetworkApi(unittest.TestCase):
+    """NetworkApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = AuthenticationApi()
+        self.api = NetworkApi()
 
     def tearDown(self) -> None:
         pass
 
-    def test_info(self) -> None:
-        """Test case for info
+    def test_create_public_ip(self) -> None:
+        """Test case for create_public_ip
 
-        Authenticated User Information
+        Create Public Ip
         """
         pass
 
-    def test_refresh_token(self) -> None:
-        """Test case for refresh_token
+    def test_deallocate_public_ip(self) -> None:
+        """Test case for deallocate_public_ip
 
-        Refresh Access Token
+        Deallocate Public Ip
         """
         pass
 
-    def test_sign_in(self) -> None:
-        """Test case for sign_in
+    def test_list_all_public_ips(self) -> None:
+        """Test case for list_all_public_ips
 
-        Sign In
-        """
-        pass
-
-    def test_sign_up(self) -> None:
-        """Test case for sign_up
-
-        Sign Up
+        List Public Ips
         """
         pass
 

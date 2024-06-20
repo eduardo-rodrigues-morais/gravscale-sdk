@@ -16,6 +16,7 @@ import unittest
 
 from gravscale.models.authorization_schema import AuthorizationSchema
 
+
 class TestAuthorizationSchema(unittest.TestCase):
     """AuthorizationSchema unit test stubs"""
 
@@ -27,21 +28,24 @@ class TestAuthorizationSchema(unittest.TestCase):
 
     def make_instance(self, include_optional) -> AuthorizationSchema:
         """Test AuthorizationSchema
-            include_option is a boolean, when False only required
-            params are included, when True both required and
-            optional params are included """
+        include_option is a boolean, when False only required
+        params are included, when True both required and
+        optional params are included"""
         # uncomment below to create an instance of `AuthorizationSchema`
         """
         model = AuthorizationSchema()
         if include_optional:
             return AuthorizationSchema(
                 access_token = '',
-                type = ''
+                refresh_token = '',
+                type = '',
+                expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f')
             )
         else:
             return AuthorizationSchema(
                 access_token = '',
                 type = '',
+                expires_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
         )
         """
 
@@ -50,5 +54,6 @@ class TestAuthorizationSchema(unittest.TestCase):
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

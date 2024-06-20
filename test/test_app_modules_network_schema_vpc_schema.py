@@ -14,11 +14,13 @@
 
 import unittest
 
-from gravscale.models.validation_error_loc_inner import ValidationErrorLocInner
+from gravscale.models.app_modules_network_schema_vpc_schema import (
+    AppModulesNetworkSchemaVpcSchema,
+)
 
 
-class TestValidationErrorLocInner(unittest.TestCase):
-    """ValidationErrorLocInner unit test stubs"""
+class TestAppModulesNetworkSchemaVpcSchema(unittest.TestCase):
+    """AppModulesNetworkSchemaVpcSchema unit test stubs"""
 
     def setUp(self):
         pass
@@ -26,24 +28,26 @@ class TestValidationErrorLocInner(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> ValidationErrorLocInner:
-        """Test ValidationErrorLocInner
+    def make_instance(self, include_optional) -> AppModulesNetworkSchemaVpcSchema:
+        """Test AppModulesNetworkSchemaVpcSchema
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `ValidationErrorLocInner`
+        # uncomment below to create an instance of `AppModulesNetworkSchemaVpcSchema`
         """
-        model = ValidationErrorLocInner()
+        model = AppModulesNetworkSchemaVpcSchema()
         if include_optional:
-            return ValidationErrorLocInner(
+            return AppModulesNetworkSchemaVpcSchema(
+                name = ''
             )
         else:
-            return ValidationErrorLocInner(
+            return AppModulesNetworkSchemaVpcSchema(
+                name = '',
         )
         """
 
-    def testValidationErrorLocInner(self):
-        """Test ValidationErrorLocInner"""
+    def testAppModulesNetworkSchemaVpcSchema(self):
+        """Test AppModulesNetworkSchemaVpcSchema"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

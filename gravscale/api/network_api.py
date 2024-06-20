@@ -21,7 +21,7 @@ from typing import Optional
 from typing_extensions import Annotated
 from gravscale.models.create_public_ip_schema import CreatePublicIpSchema
 from gravscale.models.page_public_ip_schema import PagePublicIpSchema
-from gravscale.models.task_schema import TaskSchema
+from gravscale.models.task_tree_schema import TaskTreeSchema
 
 from gravscale.api_client import ApiClient, RequestSerialized
 from gravscale.api_response import ApiResponse
@@ -56,7 +56,7 @@ class NetworkApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TaskSchema:
+    ) -> TaskTreeSchema:
         """Create Public Ip
 
 
@@ -96,7 +96,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -124,7 +124,7 @@ class NetworkApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TaskSchema]:
+    ) -> ApiResponse[TaskTreeSchema]:
         """Create Public Ip
 
 
@@ -164,7 +164,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -232,7 +232,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -320,7 +320,7 @@ class NetworkApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TaskSchema:
+    ) -> TaskTreeSchema:
         """Deallocate Public Ip
 
 
@@ -360,7 +360,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -388,7 +388,7 @@ class NetworkApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TaskSchema]:
+    ) -> ApiResponse[TaskTreeSchema]:
         """Deallocate Public Ip
 
 
@@ -428,7 +428,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -496,7 +496,7 @@ class NetworkApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "202": "TaskSchema",
+            "202": "TaskTreeSchema",
             "422": "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
