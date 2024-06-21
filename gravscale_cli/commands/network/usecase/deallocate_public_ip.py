@@ -1,13 +1,15 @@
 import ipaddress
 
+import click
+
 import gravscale
 from ..enum import EnumNetworkPrintableAttributes
-from ...abstract import (
-    AbstractReadInputValue,
-)
+from ...abstract import AbstractReadInputValue, AbstractTask, AbstractPrintableTask
 
 
-class DeallocateNetworkPublicIp(AbstractReadInputValue):
+class DeallocateNetworkPublicIp(
+    AbstractReadInputValue, AbstractTask, AbstractPrintableTask
+):
     _printable_attributes = EnumNetworkPrintableAttributes
 
     def __init__(
@@ -34,6 +36,8 @@ class DeallocateNetworkPublicIp(AbstractReadInputValue):
     async def execute(self):
         await self._validate()
         with gravscale.ApiClient(self._configuration) as api_client:
-            api_instance = gravscale.NetworkApi(api_client)
-            task = api_instance.deallocate_public_ip(self._client_id, self._address)
-            print(task.to_dict())
+            network_api = gravscale.NetworkApi(api_client)
+            click.echo("Start public ip deallocate process...")
+            task = network_api.deallocate_public_ip(self._client_id, self._address)
+            task = await self.await_task_complete(api_client, self._client_id, task)
+            await self._echo_task_info(task)

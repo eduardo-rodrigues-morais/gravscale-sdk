@@ -13,6 +13,7 @@ requests = "*"
 toml = "*"
 click = "*"
 asyncclick = "*"
+tdqm = "*"
 
 [dev-packages]
 pytest = "*"

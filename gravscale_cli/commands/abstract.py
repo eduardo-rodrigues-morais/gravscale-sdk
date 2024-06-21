@@ -1,9 +1,12 @@
 import json
 from abc import ABCMeta, abstractmethod
+from time import sleep
 from typing import List, Callable, Any, Tuple
 
 import click
+from tqdm import tqdm
 
+import gravscale
 from .exceptions import ReadInputValueException, PrintableTableException
 from .utils import get_columns_size, get_max_size_columns
 
@@ -58,6 +61,13 @@ class AbstractPrintableJSON(metaclass=ABCMeta):
         click.echo(formatted_json)
 
 
+class AbstractPrintableTask(metaclass=ABCMeta):
+    @classmethod
+    async def _echo_task_info(cls, task):
+        click.echo(f"Status: {task.status}") if task.status else None
+        click.echo(f"Result: {str(task.result)}") if task.result else None
+
+
 class AbstractReadInputValue(metaclass=ABCMeta):
     @classmethod
     async def _read_prompt_input(
@@ -83,3 +93,28 @@ class AbstractReadInputValue(metaclass=ABCMeta):
             )
         except click.exceptions.Abort:
             raise ReadInputValueException("Input aborted")
+
+
+class AbstractTask(metaclass=ABCMeta):
+    @classmethod
+    async def await_task_complete(
+        cls,
+        api_client: gravscale.ApiClient,
+        client_id: int,
+        task: gravscale.TaskSchema,
+    ):
+        updated_task = None
+        task_id = task.id
+        task_status = task.status
+        percentage_complete = task.percentage_complete
+        taskman_api = gravscale.TaskManagerApi(api_client)
+        if task_status not in ["completed", "failed"]:
+            with tqdm(total=100) as pbar:
+                while percentage_complete < 100:
+                    updated_task = taskman_api.get_task(task_id, client_id)
+                    if percentage_complete != updated_task.percentage_complete:
+                        percentage_complete = updated_task.percentage_complete
+                        pbar.update(percentage_complete)
+                    sleep(1)
+        task = updated_task if updated_task else task
+        return task
